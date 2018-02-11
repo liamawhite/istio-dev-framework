@@ -2,7 +2,7 @@
 
 This repo allows an Istio developer to quickly run code in their local Istio repo in a kube cluster during development.
 
-Currently functionality is limited to Pilot but PRs are welcome!
+Currently functionality is limited to Pilot and proxy agents in Pilot/Bookinfo but PRs are welcome!
 
 ## Prerequisites
 
