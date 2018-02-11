@@ -33,15 +33,15 @@ uninstall: uninstall-bookinfo uninstall-istio
 
 
 # Turn on components to "dev" mode
-.PHONY: pilot-dev pilot-agent-dev bookinfo-agent-dev
+.PHONY: dev-pilot dev-pilot-agent dev-bookinfo-agent
 
-pilot-dev:
+dev-pilot:
 	kubectl patch -n istio-system deployment istio-pilot -p '{"spec": {"template": {"spec": {"containers": [{"name": "discovery", "image": "docker.io/$(DOCKERHUB_USER)/pilot:dev", "imagePullPolicy": "Always"}]}}}}'
 
-pilot-agent-dev:
+dev-pilot-agent:
 	kubectl patch -n istio-system deployment istio-pilot -p '{"spec": {"template": {"spec": {"containers": [{"name": "istio-proxy", "image": "docker.io/$(DOCKERHUB_USER)/proxy_debug:dev", "imagePullPolicy": "Always"}]}}}}'
 
-bookinfo-agent-dev:
+dev-bookinfo-agent:
 	kubectl patch deployment details-v1 -p '{"spec": {"template": {"spec": {"containers": [{"name": "istio-proxy", "image": "docker.io/$(DOCKERHUB_USER)/proxy_debug:dev", "imagePullPolicy": "Always"}]}}}}'
 	kubectl patch deployment productpage-v1 -p '{"spec": {"template": {"spec": {"containers": [{"name": "istio-proxy", "image": "docker.io/$(DOCKERHUB_USER)/proxy_debug:dev", "imagePullPolicy": "Always"}]}}}}'
 	kubectl patch deployment ratings-v1 -p '{"spec": {"template": {"spec": {"containers": [{"name": "istio-proxy", "image": "docker.io/$(DOCKERHUB_USER)/proxy_debug:dev", "imagePullPolicy": "Always"}]}}}}'
