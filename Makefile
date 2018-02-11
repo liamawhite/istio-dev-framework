@@ -66,6 +66,7 @@ update-pilot-proxy: update-proxy-image
 update-proxy-image:
 	-cd $(ISTIO_REPO_DIR) && rm pilot/docker/pilot-agent
 	cd $(ISTIO_REPO_DIR) && GOOS=linux GOARCH=amd64 go build -o pilot/docker/pilot-agent ./pilot/cmd/pilot-agent
+	cp $(ISTIO_REPO_DIR)/tools/deb/envoy_bootstrap_tmpl.json $(ISTIO_REPO_DIR)/pilot/docker
 	cd $(ISTIO_REPO_DIR)/pilot/docker && docker build --no-cache -t docker.io/$(DOCKERHUB_USER)/proxy_debug:dev -f Dockerfile.proxy_debug .
 	docker push docker.io/$(DOCKERHUB_USER)/proxy_debug:dev
 
