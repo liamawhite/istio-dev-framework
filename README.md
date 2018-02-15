@@ -30,10 +30,8 @@ make get-istio
 
 ## Installing Istio/Book Info
 
-This will install Istio without mTLS.
-
 ```
-make install-istio
+make install-istio (or make install-istio-auth for mTLS)
 make install-bookinfo
 ```
 
@@ -47,7 +45,7 @@ make dev-pilot-proxy
 make dev-bookinfo-proxy
 ```
 
-When you want to test your code in kube run an update command. This builds the go binary and Dockerfile, pushes it to your DockerHub repo and then deletes the pod to force a pull of the image and re-deploy.
+When you want to test your code in kube run an update command. This builds the go binary and Dockerfile, pushes it to your DockerHub repo and then deletes the pod to force a re-pull of the image and re-deploy.
 
 ```
 make update-pilot
