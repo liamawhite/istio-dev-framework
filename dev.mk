@@ -1,5 +1,5 @@
 # Turn components to "dev" mode
-.PHONY: dev-pilot dev-pilot-agent dev-bookinfo-agent
+.PHONY: dev-pilot dev-pilot-proxy dev-bookinfo-proxy
 
 dev-pilot:
 	kubectl patch -n istio-system deployment istio-pilot -p '{"spec": {"template": {"spec": {"containers": [{"name": "discovery", "image": "docker.io/$(DOCKERHUB_USER)/pilot:dev", "imagePullPolicy": "Always"}]}}}}'
