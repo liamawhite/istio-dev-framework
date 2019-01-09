@@ -1,0 +1,5 @@
+#! /bin/bash
+
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+TFVARS=~/.istio/dev.tfvars
+terraform destroy --auto-approve --var-file=$TFVARS $DIR
