@@ -8,15 +8,22 @@ if [ ! -f $TFVARS ]; then
     read -ep "Zone [$default_zone]: " INPUT_ZONE
     INPUT_ZONE=${INPUT_ZONE:=$default_zone}
     read -p 'GCloud Account Email: ' GCLOUD_ACCOUNT
+
     echo "Creating dev tfvars file at $TFVARS"
     cat > $TFVARS << EOF
 project_id="${INPUT_PROJECT_ID}"
 zone="${INPUT_ZONE}"
 gcloud_account="${GCLOUD_ACCOUNT}"
 cluster_prefix="istio-dev"
-gke_k8s_version="1.11.3-gke.24"
+gke_k8s_version="¯\_(ツ)_/¯"
 EOF
 fi
+
+# Use most recent Kube version
+source $TFVARS
+latest_gke_k8s_version=$(gcloud container get-server-config --zone ${zone} | yq .validMasterVersions[0])
+sed -i '' -e "s/gke_k8s_version=.*/gke_k8s_version=${latest_gke_k8s_version}/g" $TFVARS
+source $TFVARS
 
 # Handle GCP Login
 if [ ! -f ~/.config/gcloud/application_default_credentials.json ]; then
@@ -31,7 +38,6 @@ terraform apply --auto-approve --var-file=$TFVARS $DIR
 
 # Set up user's kubeconfig to point at the dev cluster
 # Handle multipath gcloud KUBECONFIG cli issue if KUBECONFIG is set
-source $TFVARS
 default_kubeconfig="~./kube/config"
 if [ -z "$KUBECONFIG" ]
 then
