@@ -30,6 +30,6 @@ patch.pilot:
 	kubectl patch -n istio-system $$(kubectl get pods -n istio-system -l istio=pilot -o name) -p '{"spec": {"containers": [{"name": "discovery", "image": "docker.io/$(DOCKERHUB_USER)/pilot:dev"}]}}'
 
 delete.pilot:
-	kubectl delete $$(kubectl get pods -n istio-system -l istio=pilot -o name)
+	kubectl delete -n istio-system $$(kubectl get pods -n istio-system -l istio=pilot -o name)
 
 update.pilot: image.pilot delete.pilot patch.pilot
