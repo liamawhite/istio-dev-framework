@@ -4,7 +4,7 @@
 TFVARS=~/.istio/dev.tfvars
 if [ ! -f $TFVARS ]; then
     read -p 'Project_ID: ' INPUT_PROJECT_ID
-    default_zone=us-west1-b
+    default_zone=europe-west2-b
     read -ep "Zone [$default_zone]: " INPUT_ZONE
     INPUT_ZONE=${INPUT_ZONE:=$default_zone}
     read -p 'GCloud Account Email: ' GCLOUD_ACCOUNT

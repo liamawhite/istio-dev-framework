@@ -1,11 +1,29 @@
 # Install Istio and BookInfo
 
-install.istio:
-	-kubectl create namespace istio-system
-	helm template --name istio --namespace istio-system $(ISTIO_DIR)/install/kubernetes/helm/istio-init --set global.imagePullPolicy=Always | kubectl apply --as=admin --as-group=system:masters -f -
-	helm template --name istio --namespace istio-system $(ISTIO_DIR)/install/kubernetes/helm/istio --set global.imagePullPolicy=Always | kubectl apply --as=admin --as-group=system:masters -f -
+install.istio.master:
+	./installIstio.sh $(ISTIO_MASTER_DIR)
+
+install.istio.release:
+	# -kubectl create namespace istio-system
+	# echo $(LATEST_RELEASE_DIR)
+
+install.istio.snapshot:
+	./installIstio.sh $(LATEST_SNAPSHOT_DIR)
+
+retrieve.istio.release:
+	cd $(RELEASES_DIR) && curl -L https://git.io/getLatestIstio | sh -
+
+retrieve.istio.snapshot:
+	./getLatestSnapshot.sh
 
 install.bookinfo:
 	-kubectl label namespace default istio-injection=enabled --overwrite
-	kubectl apply -f $(ISTIO_DIR)/samples/bookinfo/platform/kube/bookinfo.yaml
-	kubectl apply -f $(ISTIO_DIR)/samples/bookinfo/networking/bookinfo-gateway.yaml
+	kubectl apply -f $(ISTIO_MASTER_DIR)/samples/bookinfo/platform/kube/bookinfo.yaml
+	kubectl apply -f $(ISTIO_MASTER_DIR)/samples/bookinfo/networking/bookinfo-gateway.yaml
+
+reset.istio.master: reset.infra install.istio.master install.bookinfo
+reset.istio.snapshot: reset.infra install.istio.snapshot install.bookinfo
+
+reset.infra:
+	infra/destroy
+	infra/provision
