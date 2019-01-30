@@ -36,4 +36,4 @@ delete.istio:
 	kubectl delete $$(kubectl get clusterrole -o name | grep istio)
 	kubectl delete $$(kubectl get clusterrolebinding -o name | grep istio)
 	kubectl delete $$(kubectl get mutatingwebhookconfiguration -o name | grep istio)
-	kubectl delete namespace istio-systemkubectl get pods 
+	kubectl delete namespace istio-system
