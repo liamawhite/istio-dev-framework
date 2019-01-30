@@ -21,9 +21,15 @@ install.bookinfo:
 	kubectl apply -f $(ISTIO_MASTER_DIR)/samples/bookinfo/platform/kube/bookinfo.yaml
 	kubectl apply -f $(ISTIO_MASTER_DIR)/samples/bookinfo/networking/bookinfo-gateway.yaml
 
-reset.istio.master: reset.infra install.istio.master install.bookinfo
-reset.istio.snapshot: reset.infra install.istio.snapshot install.bookinfo
+reset.istio.master: delete.istio install.istio.master install.bookinfo
+reset.istio.snapshot: delete.istio install.istio.snapshot install.bookinfo
+
+reset.infra.istio.master: reset.infra install.istio.master install.bookinfo
+reset.infra.istio.snapshot: reset.infra install.istio.snapshot install.bookinfo
 
 reset.infra:
 	infra/destroy
 	infra/provision
+
+delete.istio:
+	kubectl delete namespace istio-system
