@@ -11,13 +11,10 @@ image.proxy:
 	cd $(ISTIO_MASTER_DIR) && GOOS=linux GOARCH=amd64 make pilot-agent
 	cd $(ISTIO_MASTER_DIR) && GOOS=linux GOARCH=amd64 make push.docker.proxyv2
 
-patch.proxy.bookinfo:
-	kubectl patch $$(kubectl get deploy -o name) -p '{"spec": {"template": {"spec": {"containers": [{"name": "istio-proxy", "image": "docker.io/$(DOCKERHUB_USER)/proxyv2:dev"}]}}}}'
-
 delete.proxy.bookinfo:
 	kubectl delete $$(kubectl get pods -o name)
 
-update.proxy.bookinfo: image.proxy delete.proxy.bookinfo patch.proxy.bookinfo
+update.proxy.bookinfo: image.proxy delete.proxy.bookinfo
 
 #####################################################
 ######################  PILOT  ######################
