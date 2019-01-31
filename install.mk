@@ -18,7 +18,7 @@ retrieve.istio.snapshot:
 
 install.bookinfo:
 	-kubectl label namespace default istio-injection=enabled --overwrite
-	kubectl apply -f $(ISTIO_MASTER_DIR)/samples/bookinfo/platform/kube/bookinfo.yaml
+	cat $(ISTIO_MASTER_DIR)/samples/bookinfo/platform/kube/bookinfo.yaml | sed 's/imagePullPolicy: IfNotPresent/imagePullPolicy: Always/g' | kubectl apply -f -
 	kubectl apply -f $(ISTIO_MASTER_DIR)/samples/bookinfo/networking/bookinfo-gateway.yaml
 
 reset.istio.master: delete.istio install.istio.master install.bookinfo update.all
@@ -32,8 +32,8 @@ reset.infra:
 	infra/provision
 
 delete.istio:
-	kubectl delete $$(kubectl get crds -o name | grep istio)
-	kubectl delete $$(kubectl get clusterrole -o name | grep istio)
-	kubectl delete $$(kubectl get clusterrolebinding -o name | grep istio)
-	kubectl delete $$(kubectl get mutatingwebhookconfiguration -o name | grep istio)
-	kubectl delete namespace istio-system
+	-kubectl delete $$(kubectl get crds -o name | grep istio)
+	-kubectl delete $$(kubectl get clusterrole -o name | grep istio)
+	-kubectl delete $$(kubectl get clusterrolebinding -o name | grep istio)
+	-kubectl delete $$(kubectl get mutatingwebhookconfiguration -o name | grep istio)
+	-kubectl delete namespace istio-system
