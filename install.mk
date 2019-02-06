@@ -30,6 +30,7 @@ reset.infra.istio.snapshot: reset.infra install.istio.snapshot install.bookinfo
 reset.infra:
 	infra/destroy
 	infra/provision
+	kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user ${GCLOUD_ACCOUNT}
 
 delete.istio:
 	-kubectl delete $$(kubectl get crds -o name | grep istio)

@@ -14,7 +14,11 @@ image.proxy:
 delete.proxy.bookinfo:
 	kubectl delete $$(kubectl get pods -o name)
 
+delete.proxy.ingress:
+	time kubectl delete -n istio-system $$(kubectl get pods -o name -n istio-system | grep ingress)
+
 update.proxy.bookinfo: image.proxy delete.proxy.bookinfo
+update.proxy.ingress: image.proxy delete.proxy.ingress
 
 #####################################################
 ######################  PILOT  ######################
