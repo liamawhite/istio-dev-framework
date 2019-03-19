@@ -6,7 +6,7 @@ resource "google_container_cluster" "cluster" {
   # region = from provider
 
   project = "${var.project}"
-  zone    = "${var.zone}"
+  region    = "${var.region}"
 
   # Versions
 
@@ -38,12 +38,12 @@ resource "google_container_cluster" "cluster" {
   node_pool = [
     {
       name       = "ondemand"
-      node_count = 2
+      node_count = 1
 
       # Enables cluster autoscaling by implication
       autoscaling {
         min_node_count = 1
-        max_node_count = 5
+        max_node_count = 2
       }
 
       node_config {

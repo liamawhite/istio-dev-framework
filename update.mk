@@ -17,6 +17,12 @@ delete.proxy.bookinfo:
 delete.proxy.ingress:
 	time kubectl delete -n istio-system $$(kubectl get pods -o name -n istio-system | grep ingress)
 
+patch.bookinfo.proxy:
+	kubectl patch $$(kubectl get deploy -l app=details -o name) -p '{"spec": {"template": {"spec": {"containers": [{"name": "istio-proxy", "image": "docker.io/$(DOCKERHUB_USER)/proxyv2:dev"}]}}}}'
+	kubectl patch $$(kubectl get deploy -l app=reviews -o name) -p '{"spec": {"template": {"spec": {"containers": [{"name": "istio-proxy", "image": "docker.io/$(DOCKERHUB_USER)/proxyv2:dev"}]}}}}'
+	kubectl patch $$(kubectl get deploy -l app=ratings -o name) -p '{"spec": {"template": {"spec": {"containers": [{"name": "istio-proxy", "image": "docker.io/$(DOCKERHUB_USER)/proxyv2:dev"}]}}}}'
+	kubectl patch $$(kubectl get deploy -l app=productpage -o name) -p '{"spec": {"template": {"spec": {"containers": [{"name": "istio-proxy", "image": "docker.io/$(DOCKERHUB_USER)/proxyv2:dev"}]}}}}'
+
 update.proxy.bookinfo: image.proxy delete.proxy.bookinfo
 update.proxy.ingress: image.proxy delete.proxy.ingress
 

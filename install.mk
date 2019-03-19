@@ -4,8 +4,7 @@ install.istio.master:
 	./installIstio.sh $(ISTIO_MASTER_DIR) docker.io/$(DOCKERHUB_USER)/proxyv2:dev
 
 install.istio.release:
-	# -kubectl create namespace istio-system
-	# echo $(LATEST_RELEASE_DIR)
+	./installIstio.sh $(LATEST_SNAPSHOT_DIR)
 
 install.istio.snapshot:
 	./installIstio.sh $(LATEST_SNAPSHOT_DIR)

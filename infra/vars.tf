@@ -1,4 +1,4 @@
-variable "zone" {
+variable "region" {
   type = "string"
 }
 variable "project_id" {

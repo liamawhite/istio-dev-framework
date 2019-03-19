@@ -4,15 +4,15 @@
 TFVARS=~/.istio/dev.tfvars
 if [ ! -f $TFVARS ]; then
     read -p 'Project_ID: ' INPUT_PROJECT_ID
-    default_zone=europe-west2-b
-    read -ep "Zone [$default_zone]: " INPUT_ZONE
-    INPUT_ZONE=${INPUT_ZONE:=$default_zone}
+    default_region=europe-west2
+    read -ep "Region [$default_region]: " INPUT_REGION
+    INPUT_REGION=${INPUT_REGION:=$default_region}
     read -p 'GCloud Account Email: ' GCLOUD_ACCOUNT
 
     echo "Creating dev tfvars file at $TFVARS"
     cat > $TFVARS << EOF
 project_id="${INPUT_PROJECT_ID}"
-zone="${INPUT_ZONE}"
+region="${INPUT_REGION}"
 gcloud_account="${GCLOUD_ACCOUNT}"
 cluster_prefix="istio-dev"
 gke_k8s_version="¯\_(ツ)_/¯"
@@ -21,7 +21,7 @@ fi
 
 # Use most recent Kube version
 source $TFVARS
-latest_gke_k8s_version=$(gcloud container get-server-config --zone ${zone} | yq .validMasterVersions[0])
+latest_gke_k8s_version=$(gcloud container get-server-config --region ${region} | yq .validMasterVersions[0])
 sed -i '' -e "s/gke_k8s_version=.*/gke_k8s_version=${latest_gke_k8s_version}/g" $TFVARS
 source $TFVARS
 
@@ -44,4 +44,4 @@ then
     read -ep "Enter Kube Config to load context into [$default_kubeconfig]: " KUBECONFIG
     KUBECONFIG=${KUBECONFIG:=$default_kubeconfig}
 fi
-gcloud container clusters get-credentials istio-dev-gke-$zone --zone "$zone" --project "$project_id"
+gcloud container clusters get-credentials istio-dev-gke-$region --region "$region" --project "$project_id"
